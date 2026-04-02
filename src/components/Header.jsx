@@ -49,7 +49,7 @@ function Header() {
             </NavLink>
           </li>
           <li>
-            <NavLink
+            <NavLink to="/Contact"
               className="hover:bg-gray-200 hover:text-fuchsia-800 rounded-full py-2 px-4 aria-[current=page]:underline"
               href=""
             >
@@ -57,7 +57,7 @@ function Header() {
             </NavLink>
           </li>
           <li>
-            <NavLink
+            <NavLink to="/About"
               className="hover:bg-gray-200 hover:text-fuchsia-800 rounded-full py-2 px-4 aria-[current=page]:underline"
               href=""
             >
