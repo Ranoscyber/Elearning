@@ -1,24 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import DOMPurify from "dompurify";
 
 function Card() {
+  const [lesson, setLesson] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/lessons/");
+        const data = await res.json();
+        //console.log(data);
+        setLesson(data);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <h1 className="text-center text-xl mt-10">Loading...</h1>;
+  }
+
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-        <div className="flex flex-col justify-start items-start group">
-          <figure className="w-[200px] h-[200px]">
-            <img
-              className="w-full h-full group-hover:scale-105 transition-all"
-              src="https://tse1.mm.bing.net/th/id/OIP.H-598cArWpjIcAuDr5ct5AHaHa?pid=ImgDet&w=181&h=181&c=7&dpr=1.5&o=7&rm=3"
-              alt=""
-            />
-          </figure>
-          <h1 className="line-clamp-1 hover:text-fuchsia-800 text-2xl font-bold mt-2">
-            ProductName
-          </h1>
-          <p className="hover:text-fuchsia-800 italic">Java Script</p>
-        </div>
+        {lesson.map((item) => (
+          <div
+            key={item.id}
+            className="flex flex-col justify-start items-start group"
+          >
+            <figure className="w-[200px] h-[200px] overflow-hidden rounded-lg">
+              <img
+                className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                src={item.lessonImage}
+                alt={item.lessonName}
+              />
+            </figure>
+
+            <h1 className="line-clamp-1 hover:text-fuchsia-800 text-2xl font-bold mt-2">
+              {item.lessonName}
+            </h1>
+
+            <p className="hover:text-fuchsia-800 italic">
+              {item.SubCategoryName}
+            </p>
+
+            <div
+              className="text-sm text-gray-600 mt-2 line-clamp-2"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(item.lessonDescription),
+              }}
+            ></div>
+
+            <a
+              href={item.lessonPdf}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Open PDF
+            </a>
+          </div>
+        ))}
       </div>
-      </>
+    </>
   );
 }
 
