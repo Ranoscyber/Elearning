@@ -5,6 +5,7 @@ import RootLayout from './layouts/RootLayout'
 import Learns from './pages/Learns'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import LessonDetail from './pages/LessonDetail'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/Learns' element={<Learns/>}></Route>
           <Route path='/About' element={<About/>}></Route>
           <Route path='/Contact' element={<Contact/>}></Route>
+          <Route path='/Detail' element={<LessonDetail/>}></Route>
         </Route>
 
       </Routes>

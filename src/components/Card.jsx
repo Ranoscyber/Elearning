@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
+import { Link } from "react-router-dom";
 
 function Card() {
   const [lesson, setLesson] = useState([]);
@@ -56,7 +57,7 @@ function Card() {
                 __html: DOMPurify.sanitize(item.lessonDescription),
               }}
             ></div>
-
+            <div className="flex items-center justify-between gap-2">
             <a
               href={item.lessonPdf}
               target="_blank"
@@ -65,6 +66,8 @@ function Card() {
             >
               Open PDF
             </a>
+            <Link className="mt-3 px-3 py-1 bg-fuchsia-700 text-white rounded hover:bg-fuchsia-800" to="/Detail">Product Detail</Link>
+            </div>
           </div>
         ))}
       </div>
