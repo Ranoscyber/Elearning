@@ -1,77 +1,54 @@
-import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import { Link } from "react-router-dom";
 
-function Card() {
-  const [lesson, setLesson] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("http://127.0.0.1:8000/api/lessons/");
-        const data = await res.json();
-        //console.log(data);
-        setLesson(data);
-      } catch (err) {
-        console.log(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return <h1 className="text-center text-xl mt-10">Loading...</h1>;
-  }
-
+function Card({ lesson }) {
   return (
-    <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-        {lesson.map((item) => (
-          <div
-            key={item.id}
-            className="flex flex-col justify-start items-start group"
-          >
-            <figure className="w-[200px] h-[200px] overflow-hidden rounded-lg">
-              <img
-                className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                src={item.lessonImage}
-                alt={item.lessonName}
-              />
-            </figure>
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 group">
+      <figure className="w-full h-52 overflow-hidden">
+        <img
+          src={lesson.lessonImage}
+          alt={lesson.lessonName}
+          className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+        />
+      </figure>
 
-            <h1 className="line-clamp-1 hover:text-fuchsia-800 text-2xl font-bold mt-2">
-              {item.lessonName}
-            </h1>
+      <div className="p-4 text-left">
+        <p className="text-sm text-fuchsia-700 font-medium mb-1">
+          {lesson.SubCategoryName}
+        </p>
 
-            <p className="hover:text-fuchsia-800 italic">
-              {item.SubCategoryName}
-            </p>
+        <h2 className="text-xl font-bold line-clamp-1 mb-2">
+          {lesson.lessonName}
+        </h2>
 
-            <div
-              className="text-sm text-gray-600 mt-2 line-clamp-2"
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(item.lessonDescription),
-              }}
-            ></div>
-            <div className="flex items-center justify-between gap-2">
+        <div
+          className="text-sm text-gray-600 line-clamp-3 leading-6"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(lesson.lessonDescription),
+          }}
+        />
+
+        <div className="flex flex-wrap gap-2 mt-4">
+          {lesson.lessonPdf && (
             <a
-              href={item.lessonPdf}
+              href={lesson.lessonPdf}
               target="_blank"
               rel="noreferrer"
-              className="mt-3 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
               Open PDF
             </a>
-            <Link className="mt-3 px-3 py-1 bg-fuchsia-700 text-white rounded hover:bg-fuchsia-800" to="/Detail">Product Detail</Link>
-            </div>
-          </div>
-        ))}
+          )}
+
+          <Link
+            to={`/detail/${lesson.id}`}
+            className="px-4 py-2 bg-fuchsia-700 text-white rounded-lg hover:bg-fuchsia-800"
+          >
+            View Detail
+          </Link>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

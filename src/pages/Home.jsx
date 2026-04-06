@@ -1,8 +1,27 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Card from "../components/Card";
-
-
+import { getLessons } from "../api/api";
 
 function Home() {
+  const [lessons, setLessons] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHomeLessons = async () => {
+      try {
+        const data = await getLessons({ page: 1, pageSize: 4 });
+        setLessons(data.results || []);
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeLessons();
+  }, []);
+
   return (
     <>
       <section className="relative overflow-hidden bg-[#5b2be0] text-white font-jost">
@@ -34,26 +53,47 @@ function Home() {
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <button className="px-7 py-3.5 rounded-full bg-white text-[#5b2be0] font-semibold text-lg hover:scale-[1.02] transition">
-                  Start Free
-                </button>
-
-                <button className="px-7 py-3.5 rounded-full border border-white/70 text-white font-semibold text-lg hover:bg-white hover:text-[#5b2be0] transition">
+                <Link
+                  to="/learns"
+                  className="px-7 py-3.5 rounded-full bg-white text-[#5b2be0] font-semibold text-lg hover:scale-[1.02] transition text-center"
+                >
                   Explore Courses
-                </button>
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-    <div className="max-w-[90%] lg:max-w-5xl mx-auto font-jost text-center my-20">
-      <h1 className="text-2xl">Recommend Lesson</h1>
-      <p className="italic">Explore with modern programming language</p>
-    <Card/>
-    </div>
+      <section className="max-w-[90%] lg:max-w-6xl mx-auto font-jost my-20">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold">Recommended Lessons</h1>
+          <p className="italic text-gray-600">
+            Explore with modern programming language
+          </p>
+        </div>
 
-            
+        {loading ? (
+          <h2 className="text-center text-xl mt-10">Loading...</h2>
+        ) : lessons.length === 0 ? (
+          <h2 className="text-center text-xl mt-10">No lessons found</h2>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {lessons.map((lesson) => (
+              <Card key={lesson.id} lesson={lesson} />
+            ))}
+          </div>
+        )}
+
+        <div className="text-center mt-10">
+          <Link
+            to="/learns"
+            className="inline-block px-6 py-3 bg-fuchsia-700 text-white rounded-lg hover:bg-fuchsia-800"
+          >
+            View All Lessons
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

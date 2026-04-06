@@ -142,10 +142,10 @@ function Header() {
         </div>
 
         <div className="flex flex-col gap-5 mt-4">
-            <a href="" className="hover:text-fuchsia-800 hover:bg-gray-200 rounded-lg p-2 transition-all">Home</a>
-            <a href="" className="hover:text-fuchsia-800 hover:bg-gray-200 rounded-lg p-2 transition-all">Learn</a>
-            <a href="" className="hover:text-fuchsia-800 hover:bg-gray-200 rounded-lg p-2 transition-all">Contact</a>
-            <a href="" className="hover:text-fuchsia-800 hover:bg-gray-200 rounded-lg p-2 transition-all">About</a>
+            <Link to="/" href="" className="hover:text-fuchsia-800 hover:bg-gray-200 rounded-lg p-2 transition-all">Home</Link>
+            <Link to="/learns" href="" className="hover:text-fuchsia-800 hover:bg-gray-200 rounded-lg p-2 transition-all">Learn</Link>
+            <Link to="/contact" href="" className="hover:text-fuchsia-800 hover:bg-gray-200 rounded-lg p-2 transition-all">Contact</Link>
+            <Link to="/about" href="" className="hover:text-fuchsia-800 hover:bg-gray-200 rounded-lg p-2 transition-all">About</Link>
         </div>
 
       </header>
